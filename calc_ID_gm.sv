@@ -18,14 +18,14 @@ always@*begin
 	if ((V_GS - 1) > V_DS)
 		m[1] = 1'b0;
 	else
-		m[1] = 1'b0;
+		m[1] = 1'b1;
 	m[0] = mode;
 end
 wire [2:0] V_GS_m_1;
 wire [2:0] V_GS_OR_DS_0;
 wire [2:0] V_GS_OR_DS_1;
 assign V_GS_m_1 = V_GS-1;
-assign V_GS_OR_DS_0 = (m==2'b11)?V_DS:V_GS_m_1;
+assign V_GS_OR_DS_0 = (m==2'b00)?V_DS:V_GS_m_1;
 assign V_GS_OR_DS_1 = (m[0]==1'b0)?3'b001:
 					  (m[1]==1'b1)? V_GS_m_1:V_DS;
 
