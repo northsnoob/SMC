@@ -77,11 +77,13 @@ comparator my_comparator2(
 		.bigger(sort_tmp0[4]),
 		.smaller(sort_tmp0[5])
 		);
-wire [9:0] sort_tmp1 [0:5];
+wire [9:0] sort_tmp1 [0:3];
 wire [9:0] sort_tmp1_1 [0:3];
 
 wire swap_f0;
 wire swap_f1;
+wire swap_f2;
+wire swap_f3;
 //----------------------------- second level -----------------------------//
 comparator my_comparator3(
 		.a(sort_tmp0[0]),
@@ -122,18 +124,23 @@ comparator my_comparator7(
 		.a(sort_tmp2_2[0]),
 		.b(sort_tmp2_2[1]),
 		.bigger(number_out[1]),
-		.smaller(sort_tmp2_2[2])
+		.smaller(sort_tmp2_2[2]),
+		.swap(swap_f2)
 		);
 
-assign sort_tmp2_2[3] = (swap_f1)? sort_tmp1[1]:sort_tmp1[2];
+assign sort_tmp2_2[3] = (swap_f1)? sort_tmp1[1]:
+						(~swap_f2)? sort_tmp0[5]:sort_tmp1[2];
 comparator my_comparator8(
 		.a(sort_tmp2_2[2]),
 		.b(sort_tmp2_2[3]),
 		.bigger(number_out[2]),
-		.smaller(sort_tmp2_2[4])
+		.smaller(sort_tmp2_2[4]),
+		.swap(swap_f3)
 		);
 
-assign sort_tmp2_2[5] = (swap_f1)? sort_tmp1[2]:sort_tmp1[3];
+assign sort_tmp2_2[5] = (swap_f1)? sort_tmp1[2]:
+						(~swap_f2)? sort_tmp1[2]:
+						(~swap_f3)? sort_tmp0[5]:sort_tmp1[3];
 comparator my_comparator9(
 		.a(sort_tmp2_2[4]),
 		.b(sort_tmp2_2[5]),
@@ -141,7 +148,11 @@ comparator my_comparator9(
 		.smaller(sort_tmp2_2[6])
 		);
 
-assign sort_tmp2_2[7] = (swap_f1)? sort_tmp1[3]:sort_tmp0[5];
+// assign sort_tmp2_2[7] = (swap_f1)? sort_tmp1[3]:
+// 						(!swap_f2)? sort_tmp1[3]:sort_tmp0[5];
+assign sort_tmp2_2[7] = (swap_f1)? sort_tmp1[3]:
+						(~swap_f2)? sort_tmp1[3]:
+						(~swap_f3)? sort_tmp1[3]:sort_tmp0[5];
 comparator my_comparator10(
 		.a(sort_tmp2_2[6]),
 		.b(sort_tmp2_2[7]),
